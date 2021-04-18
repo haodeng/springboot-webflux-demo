@@ -19,13 +19,16 @@ public class CustomerHandler {
 
     public Mono<ServerResponse> getCustomers(ServerRequest request){
         Flux<Customer> customerList = dao.getCustomerList();
-        return ServerResponse.ok().body(customerList, Customer.class);
+        return ServerResponse
+                .ok()
+                .body(customerList, Customer.class);
     }
 
     public Mono<ServerResponse> getCustomersViaStream(ServerRequest request) {
         Flux<Customer> customersStream = dao.getCustomersStream();
-        return ServerResponse.ok().
-                contentType(MediaType.TEXT_EVENT_STREAM)
+        return ServerResponse
+                .ok()
+                .contentType(MediaType.TEXT_EVENT_STREAM)
                 .body(customersStream, Customer.class);
     }
 
@@ -35,14 +38,19 @@ public class CustomerHandler {
                 .filter(c -> c.getId() == customerId)
                 .next();
 
-        return ServerResponse.ok().body(customerMono, Customer.class);
+        return ServerResponse
+                .ok()
+                .body(customerMono, Customer.class);
     }
 
 
     public Mono<ServerResponse> saveCustomer(ServerRequest request){
         Mono<Customer> customerMono = request.bodyToMono(Customer.class);
         Mono<String> saveResponse = customerMono.map(dto -> dto.getId() + ":" + dto.getName());
-        return ServerResponse.ok().body(saveResponse,String.class);
+
+        return ServerResponse
+                .ok()
+                .body(saveResponse, String.class);
     }
 
 
